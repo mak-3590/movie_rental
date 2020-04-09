@@ -89,6 +89,8 @@ class MovieRental extends Component {
 
     logoutHandler = () => {
 
+      console.log("logged out clicked")
+
         const state = this;
         firebase.auth().signOut().then(function() {
 
@@ -218,6 +220,7 @@ class MovieRental extends Component {
     render (){
 
         let moviesList = "";
+        let rentList = "";
 
 
         if(this.state.items){
@@ -228,14 +231,7 @@ class MovieRental extends Component {
         }
                   
 
-        /*if(this.state.orderDone ){
-            moviesList = <Movies 
-                      clicked={this.rentOutHandler.bind(this)}
-                      items={this.state.items}
-                    />;
-        }*/
         
-        let rentList = "";
 
         if(this.state.openModal ){
           rentList = <Rent 
@@ -247,13 +243,16 @@ class MovieRental extends Component {
 
         }
 
+
+
         return (
             <Aux>
             <Header 
                 loggedIn={this.state.loggedIn}
-                name = {this.state.userData.name}
+                userData = {this.state.userData}
                 logoutClicked={this.logoutHandler}
-                loginClicked={this.loginHandler}/>
+                loginClicked={this.loginHandler}
+             />
             <Modal
                 show={this.state.openModal}
                 modalClosed={this.modalClosed}

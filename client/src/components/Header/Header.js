@@ -14,8 +14,13 @@ class Header extends Component {
       
       if(this.props.loggedIn){
 
-        loginElem = <Button btnType="Login" onClick={this.props.logoutClicked}>Logout</Button>;
-        nameElem = <div className={styles.UserName}>{this.props.name}</div>
+        loginElem = <Button btnType="Login" clicked={this.props.logoutClicked}>Logout</Button>;
+
+
+        if(this.props.userData.name){
+
+          nameElem = <div className={styles.UserName}>{this.props.userData.name}</div>;
+        }
 
       }
       
