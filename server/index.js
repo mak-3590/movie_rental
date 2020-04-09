@@ -37,20 +37,6 @@ server.pre(cors.preflight)
 server.use(cors.actual)
 
 
-function corsHandler(req, res, next) {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Headers', 'Origin, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, X-Response-Time, X-PINGOTHER, X-CSRF-Token,Authorization');
-    res.setHeader('Access-Control-Allow-Methods', '*');
-    res.setHeader('Access-Control-Expose-Headers', 'X-Api-Version, X-Request-Id, X-Response-Time');
-    res.setHeader('Access-Control-Max-Age', '1000');
-    return next();
-}
-
-function optionsRoute(req, res, next) {
-    res.send(200);
-    return next();
-}
-
 /*server.use(restify.CORS({          // defaults to false
 methods: ['GET','PUT','DELETE','POST','OPTIONS']
 }));*/
@@ -69,11 +55,11 @@ server.get('/'+ver+'/users',getUsersHandler);
 server.get('/'+ver+'/user/:id',getUserHandler);
 
 server.post('/'+ver+'/orders',addOrderHandler);
-server.get('/'+ver+'/user/:id/orders',getUserRentalsHandler);
+server.get('/'+ver+'/user/:id/orders',getUserOrdersHandler);
 
 
-function getUserRentalsHandler(req, res, next) {
-		//let query = "SELECT movies.name AS movie_name,movies.id,movies.type,movies.rented,movie_types.name AS mtype_name,movie_types.price FROM movies INNER JOIN movie_types ON movies.type = movie_types.id";
+function getUserOrdersHandler(req, res, next) {
+	
 	const id = req.params.id;
 	const query = "SELECT u.name AS uname,u.email_id, o.id AS order_id,o.payment_type, m.id AS movie_id,m.name,m.type,mt.name AS movie_type,pt.name AS payment_name FROM users u INNER JOIN orders o on o.user_id = u.id INNER JOIN payment_types pt on o.payment_type = pt.id INNER JOIN movies m on m.id = o.movie_id INNER JOIN movie_types mt on m.type = mt.id WHERE u.id = '"+id+"'";
 	
@@ -294,6 +280,20 @@ function deleteMovieHandler(req, res, next) {
 		return res.send({ 'status':HttpStatus.INTERNAL_SERVER_ERROR,error: err, message: err.message });
 	}
 
+}
+
+function corsHandler(req, res, next) {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Headers', 'Origin, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, X-Response-Time, X-PINGOTHER, X-CSRF-Token,Authorization');
+    res.setHeader('Access-Control-Allow-Methods', '*');
+    res.setHeader('Access-Control-Expose-Headers', 'X-Api-Version, X-Request-Id, X-Response-Time');
+    res.setHeader('Access-Control-Max-Age', '1000');
+    return next();
+}
+
+function optionsRoute(req, res, next) {
+    res.send(200);
+    return next();
 }
 
  
