@@ -44,13 +44,15 @@ Copy firebaseconfig and update it in {project_root}/client/src/firebase.Js
 
 -> sudo docker container ls
 
+-> exit (Exit from mysql-CLI)
+
 {get the container id eg: 3ee4624705f0}
  
 Navigate to {dir}/movie_rental/server
 
--> sudo docker cp movie_rental.Sql 3ee4624705f0:/movie_rental.Sql
+-> sudo docker cp movie_rental.sql 3ee4624705f0:/movie_rental.sql
 
--> sudo docker exec -I mysql mysql -uroot -ppassword mysql < movie_rental.sql
+-> sudo docker exec -i mysql mysql -uroot -ppassword mysql < movie_rental.sql
 
 
 # Backend - steps to start backend container
@@ -61,12 +63,11 @@ Go to {dir}/movie_rental/server
 
 Get ip address of mysql container
 
--> docker inspect {mysql_container_id} --format='{{range .Networksettings.Networks}}{{.Ipaddress}}{{end}}'
--> sudo docker inspect 3ee4624705f0 --format='{{range .Networksettings.Networks}}{{.Ipaddress}}{{end}}'
+-> sudo docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' {mysql_container_id}
 
 Edit .Env file present in {dir}/movie_rental/server/ folder and copy the ipaddress of the mysql container 
 
--> sudo docker run -d -p 8081:8081 --env-file .Env movie_rental_backend
+-> sudo docker run -d -p 8081:8081 --env-file .env movie_rental_backend
 
 Backend - http://localhost:8081/v1/movies
 
@@ -74,11 +75,13 @@ Backend - http://localhost:8081/v1/movies
 
 # Frontend - steps to start frontend container
 
-Edit .Env file present in {dir}/movie_rental/client/ folder and copy the ipaddress of the host machine with port 8081
+Go to {dir}/movie_rental/client/
+
+Edit .env file present in {dir}/movie_rental/client/ folder and copy the ipaddress of the host machine with port 8081
 
 -> sudo docker build -t movie_rental_frontend .
 
--> sudo docker run -it -d -p 3000:3000 movie_rental_client
+-> sudo docker run -it -d -p 3000:3000 --env-file .env movie_rental_frontend
 
 Access the frontend - http://localhost:3000/
 
