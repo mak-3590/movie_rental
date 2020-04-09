@@ -61,7 +61,7 @@ server.get('/'+ver+'/user/:id/orders',getUserOrdersHandler);
 function getUserOrdersHandler(req, res, next) {
 	
 	const id = req.params.id;
-	const query = "SELECT u.name AS uname,u.email_id, o.id AS order_id,o.payment_type, m.id AS movie_id,m.name,m.type,mt.name AS movie_type,pt.name AS payment_name FROM users u INNER JOIN orders o on o.user_id = u.id INNER JOIN payment_types pt on o.payment_type = pt.id INNER JOIN movies m on m.id = o.movie_id INNER JOIN movie_types mt on m.type = mt.id WHERE u.id = '"+id+"'";
+	const query = "SELECT u.name AS uname,u.email_id, o.id AS order_id,o.payment_type, m.id AS movie_id,m.name,m.type,mt.name AS movie_type,pt.name AS payment_name FROM users u INNER JOIN orders o on o.user_id = u.id INNER JOIN payment_types pt on o.payment_type = pt.id INNER JOIN movies m on m.id = o.movie_id INNER JOIN movie_types mt on m.type = mt.id WHERE u.id = '"+id+"' ORDER BY o.id DESC";
 	
 	try {
 		connection.query(query, function (error, results, fields) {
