@@ -237,10 +237,10 @@ function updateMovieHandler(req, res, next) {
 
 function getMoviesHandler(req, res, next) {
 
-	let query = "SELECT movies.name AS movie_name,movies.id,movies.type,movies.rented,movie_types.name AS mtype_name,movie_types.price FROM movies INNER JOIN movie_types ON movies.type = movie_types.id WHERE movies.deleted=0";
+	let query = "SELECT movies.name AS movie_name,movies.id,movies.type,movies.rented,movie_types.name AS mtype_name,movie_types.price FROM movies INNER JOIN movie_types ON movies.type = movie_types.id WHERE movies.deleted=0 ORDER BY movies.id DESC";
 
 	if(req.query.rented){
-		query = "SELECT movies.name AS movie_name,movies.id,movies.type,movies.rented,movie_types.name AS mtype_name,movie_types.price FROM movies INNER JOIN movie_types ON movies.type = movie_types.id WHERE movies.deleted=0 AND movies.rented="+req.query.rented;
+		query = "SELECT movies.name AS movie_name,movies.id,movies.type,movies.rented,movie_types.name AS mtype_name,movie_types.price FROM movies INNER JOIN movie_types ON movies.type = movie_types.id WHERE movies.deleted=0 AND movies.rented="+req.query.rented+" ORDER BY movies.id DESC";
 	}
 
 	try {
