@@ -1,81 +1,88 @@
-# MOVIES RENTAL
+# movies rental
 
-# FIREBASE
+# Tech Stack
 
-I HAVE USED FIREBASE FOR AUTHENTICATION. 
+ 1. Firebase google authentication to authenticate users.
+ 2. React framework for serving front-end.
+ 3. Restify API framework.
+ 4. Mysql DB.
 
-https://console.firebase.google.com/
+# Firebase
 
-CREATE PROJECT
+Https://console.Firebase.Google.Com/
 
-CLICK AUTHENTICATION ON THE LEFT SECTION
+Create project
 
-SETUP SIGNIN METHOD 
+Click authentication on the left section
 
-CLICK GOOGLE AND CLICK ENABLE ON TOP RIGHT
+Setup signin method 
 
-SCROLL DOWN AND ADD DOMAIN IF NEEDED
+Click google and click enable on top right
 
-GO TO PROJECT SETTING IN PROJECT OVERVIEW
+Scroll down and add domain if needed
 
-SCROLL DOWN AND CLICK ON WEBAPP AND REGISTER THE APPLICATION
+Go to project setting in project overview
 
-COPY firebaseConfig AND UPDATE IT IN {PROJECT_ROOT}/client/src/Firebase.js
+Scroll down and click on webapp and register the application
+
+Copy firebaseconfig and update it in {project_root}/client/src/firebase.Js
 
 
-# MYSQL - STEPS TO START MYSQL CONTAINER
+# Mysql - steps to start mysql container
 
-sudo docker run -p 3306:3306 --name mysql -v /var/lib/mysql:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=password -d mysql:latest
+sudo docker run -p 3306:3306 --name mysql -v /var/lib/mysql:/var/lib/mysql -e mysql_root_password=password -d mysql:latest
 
 sudo docker exec -it mysql mysql -uroot -p
 
-ALTER USER 'root'@'localhost' IDENTIFIED BY 'password';
+Alter user 'root'@'localhost' identified by 'password';
 
-CREATE USER 'mysql'@'%' IDENTIFIED WITH mysql_native_password BY 'password';
+Create user 'mysql'@'%' identified with mysql_native_password by 'password';
 
-GRANT ALL PRIVILEGES ON *.* TO 'mysql'@'%' WITH GRANT OPTION;
+Grant all privileges on *.* to 'mysql'@'%' with grant option;
 
-FLUSH PRIVILEGES;
+Flush privileges;
 
 sudo docker container ls
 
-{GET THE CONTAINER ID eg: 3ee4624705f0}
+{get the container id eg: 3ee4624705f0}
  
-NAVIGATE TO {DIR}/movie_rental/server
+Navigate to {dir}/movie_rental/server
 
-sudo docker cp movie_rental.sql 3ee4624705f0:/movie_rental.sql
+sudo docker cp movie_rental.Sql 3ee4624705f0:/movie_rental.Sql
 
-sudo docker exec -i mysql mysql -uroot -ppassword mysql < movie_rental.sql
+sudo docker exec -I mysql mysql -uroot -ppassword mysql < movie_rental.Sql
 
 
-# BACKEND - STEPS TO START BACKEND CONTAINER
+# Backend - steps to start backend container
 
-{DIR}/movie_rental/server
+{dir}/movie_rental/server
 
 sudo docker build -t movie_rental_backend .
 
-GET IP ADDRESS OF MYSQL CONTAINER
+Get ip address of mysql container
 
-docker inspect {MYSQL_CONTAINER_ID} --format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}'
-sudo docker inspect 3ee4624705f0 --format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}'
+Docker inspect {mysql_container_id} --format='{{range .Networksettings.Networks}}{{.Ipaddress}}{{end}}'
+Sudo docker inspect 3ee4624705f0 --format='{{range .Networksettings.Networks}}{{.Ipaddress}}{{end}}'
 
-EDIT .env FILE PRESENT IN {DIR}/movie_rental/server/ folder AND COPY THE IPADDRESS OF THE MYSQL CONTAINER 
+Edit .Env file present in {dir}/movie_rental/server/ folder and copy the ipaddress of the mysql container 
 
-sudo docker run -d -p 8081:8081 --env-file .env movie_rental_backend
+sudo docker run -d -p 8081:8081 --env-file .Env movie_rental_backend
+
+Backend - http://localhost:8081/v1/movies
 
 
 
-# FRONTEND - STEPS TO START FRONTEND CONTAINER
+# Frontend - steps to start frontend container
 
-EDIT .env FILE PRESENT IN {DIR}/movie_rental/client/ folder AND COPY THE IPADDRESS OF THE HOST MACHINE WITH PORT 8081
+Edit .Env file present in {dir}/movie_rental/client/ folder and copy the ipaddress of the host machine with port 8081
 
 sudo docker build -t movie_rental_frontend .
 
 sudo docker run -it -d -p 3000:3000 movie_rental_client
 
-ACCESS THE FRONTEND - http://{IPADDRESS OR LOCALHOST}:3000/
+Access the frontend - http://localhost:3000/
 
-ADMIN - http://{IPADDRESS OR LOCALHOST}:3000/admin [ Movies can added, deleted and edited ]
+Admin - http://localhost:3000/admin [ movies can added, deleted and edited ]
 
 
 
