@@ -1,4 +1,4 @@
-# movies rental
+# Video Rental Store
 
 # Tech Stack
 
