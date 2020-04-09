@@ -9,7 +9,7 @@
 
 # Firebase
 
-Https://console.Firebase.Google.Com/
+https://console.firebase.google.com/
 
 Create project
 
