@@ -3,16 +3,17 @@ import firestore from 'firebase/firestore'
 
 const settings = {timestampsInSnapshots: true};
 
-const config = {
-  apiKey: "AIzaSyBirh0IvCCuDTvyMFYNeBUS_8cBHXstYAE",
-    authDomain: "online-test-4a111.firebaseapp.com",
-    databaseURL: "https://online-test-4a111.firebaseio.com",
-    projectId: "online-test-4a111",
-    storageBucket: "online-test-4a111.appspot.com",
-    messagingSenderId: "32451708334",
-    appId: "1:32451708334:web:4499135ce9d959b77bb43f"
-};
-firebase.initializeApp(config);
+const firebaseConfig = {
+    apiKey: "AIzaSyCtdUtjNLeidR8NxOXWqvls37ZvjQuCEcE",
+    authDomain: "movie-rental-19774.firebaseapp.com",
+    databaseURL: "https://movie-rental-19774.firebaseio.com",
+    projectId: "movie-rental-19774",
+    storageBucket: "movie-rental-19774.appspot.com",
+    messagingSenderId: "528232991031",
+    appId: "1:528232991031:web:d0926a38e14d386c7072b2",
+    measurementId: "G-87F962J4L9"
+  };
+firebase.initializeApp(firebaseConfig);
 
 firebase.firestore().settings(settings);
 
