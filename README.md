@@ -36,9 +36,9 @@ Copy firebaseconfig and update it in {project_root}/client/src/firebase.Js
 
 -> Alter user 'root'@'localhost' identified by 'password';
 
--> Create user 'mysql'@'%' identified with mysql_native_password by 'password';
+-> CREATE USER 'mysql'@'%' IDENTIFIED WITH mysql_native_password BY 'password';
 
--> Grant all privileges on *.* to 'mysql'@'%' with grant option;
+-> GRANT ALL PRIVILEGES ON *.* TO 'mysql'@'%' WITH GRANT OPTION;
 
 -> Flush privileges;
 
