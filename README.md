@@ -55,7 +55,7 @@ sudo docker exec -I mysql mysql -uroot -ppassword mysql < movie_rental.Sql
 
 # Backend - steps to start backend container
 
-{dir}/movie_rental/server
+Go to {dir}/movie_rental/server
 
 sudo docker build -t movie_rental_backend .
 
