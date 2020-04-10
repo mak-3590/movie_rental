@@ -40,8 +40,8 @@ http://localhost:8081/v1/movies
 
 ## Frontend
 
-http://localhost:3000/
-http://localhost:3000/admin (Admin Panel)
+- http://localhost:3000/
+- http://localhost:3000/admin (Admin Panel)
 
 
 
