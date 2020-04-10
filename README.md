@@ -45,13 +45,13 @@ Go to {dir}/movie_rental/server
 
 - sudo docker build -t movie_rental_backend .
 
-Get ip address of mysql container
+~~Get ip address of mysql container
 
-- sudo docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' {mysql_container_id}
+~~- sudo docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' {mysql_container_id}
 
-Edit .env file present in {dir}/movie_rental/server/ folder and copy the ipaddress of the mysql container 
+~~Edit .env file present in {dir}/movie_rental/server/ folder and copy the ipaddress of the mysql container 
 
-- sudo docker run -d -p 8081:8081 --env-file .env movie_rental_backend
+- sudo docker run -d -p 8081:8081 --env-file .env --link mysql movie_rental_backend
 
 Backend - http://localhost:8081/v1/movies
 
