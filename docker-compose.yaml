@@ -1,0 +1,38 @@
+version: '3.3'
+services:
+  mysql:
+    container_name: mysql
+    image: mysql:5.7
+    hostname: mysql
+    ports:
+     - "3306:3306"
+    expose:
+     - "3306"
+    volumes:
+     - db-data:/var/lib/mysql 
+    environment:
+     - MYSQL_DATABASE=movie_rental
+     - MYSQL_PASSWORD=passsword
+     - MYSQL_USER=mysql
+     - MYSQL_ROOT_PASSWORD=password
+  server:
+    links:
+     - mysql
+    depends_on:
+     - mysql
+    build: './server'
+    ports:
+     - "8081:8081"
+    environment:
+     WAIT_HOSTS: mysql:3306
+    env_file:
+     - server/.env
+  client:
+    tty: true
+    build: './client'
+    ports:
+     - "3000:3000"
+    env_file:
+     - client/.env
+volumes:
+  db-data:
