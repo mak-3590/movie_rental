@@ -111,7 +111,7 @@ async function addOrderHandler(req, res, next) {
 	// Once the order is placed update the points for the user
 
 	const updatePointsQuery = 'UPDATE users SET points="'+points+'" WHERE id="'+user_id+'"';
-	const points = await asynqQuery(updatePointsQuery);
+	const pointsData = await asynqQuery(updatePointsQuery);
 
 	res.send({status:200, orderId: order.insertId });
 
