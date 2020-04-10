@@ -73,15 +73,13 @@ class MovieRental extends Component {
 
       firebase.auth().signInWithPopup(provider).then(function(result) {
         
-        const token = result.credential.accessToken;
         const user = result.user;
         const id = user.uid;
         const name = user.displayName;
         const email_id = user.email;
         state.addUserHandler(id,name,email_id);
         state.setState({loggedIn:true});
-        ;
-        // ...
+
       }).catch(function(error) {
           console.log(error);
       });
@@ -89,13 +87,8 @@ class MovieRental extends Component {
 
     logoutHandler = () => {
 
-      console.log("logged out clicked")
-
         const state = this;
         firebase.auth().signOut().then(function() {
-
-          console.log("Logged Out");
-
           state.setState(
             {
               loggedIn:false,
@@ -112,19 +105,20 @@ class MovieRental extends Component {
     }
 
     authStateChanged = () => {
+
         const state = this;
 
-          firebase.auth().onAuthStateChanged(function(user) {
-            if(user){
-              state.setState({loggedIn:true});
-              state.getUserHandler(user.uid);
+        firebase.auth().onAuthStateChanged(function(user) {
+          if(user){
+            state.setState({loggedIn:true});
+            state.getUserHandler(user.uid);
+          
+          }else{
+            state.setState({loggedIn:false});
             
-            }else{
-              state.setState({loggedIn:false});
-              
-            }
+          }
 
-        });
+      });
 
     }
 
@@ -132,7 +126,6 @@ class MovieRental extends Component {
     componentDidMount(){
         
         this.getMoviesHandler();
-        //this.logoutHandler();
         this.authStateChanged();
         this.setState({orderDone: true});
           

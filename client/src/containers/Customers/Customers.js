@@ -29,7 +29,7 @@ class Admin extends Component {
   componentDidMount(){
       this.getMoviesHandler();
   }
-  s
+  
   render (){
 
       let customers = "";

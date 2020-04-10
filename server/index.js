@@ -94,15 +94,24 @@ async function addOrderHandler(req, res, next) {
 	const movie_id = req.params.movie_id;
 	const payment_type = req.params.payment_type;
 	const points = req.params.points;
-	const query = "INSERT INTO orders (user_id, movie_id, payment_type) VALUES ('"+user_id+"','"+movie_id+"','"+payment_type+"')";
+	
 	
 	try {
 
-	const order = await asynqQuery(query);
-	
-	await updateMovieAvailability(movie_id);
+	// Add orders to order table
 
-	await updatePoints(points,user_id);
+	const orderQuery = "INSERT INTO orders (user_id, movie_id, payment_type) VALUES ('"+user_id+"','"+movie_id+"','"+payment_type+"')";
+	const order = await asynqQuery(orderQuery);
+	
+	// Once the order is placed change the availability (rented = 1)
+
+	const updateAvailQuery = "UPDATE movies SET rented=1 WHERE id="+movie_id;
+	const movies = await asynqQuery(updateAvailQuery);
+
+	// Once the order is placed update the points for the user
+
+	const updatePointsQuery = 'UPDATE users SET points="'+points+'" WHERE id="'+user_id+'"';
+	const points = await asynqQuery(updatePointsQuery);
 
 	res.send({status:200, orderId: order.insertId });
 
@@ -111,24 +120,6 @@ async function addOrderHandler(req, res, next) {
 	}
 
 }
-
-async function updateMovieAvailability(id){
-
-	const query = "UPDATE movies SET rented=1 WHERE id="+id;
-	return await connection.query(query);
-
-}
-
-async function updatePoints(points,id){
-
-	try {
-		const query = 'UPDATE users SET points="'+points+'" WHERE id="'+id+'"';
-		return await connection.query(query);
-	}catch(err){
-	    return res.send({ 'status':HttpStatus.INTERNAL_SERVER_ERROR,error: err, message: err.message }); // 500
-	}
-}
-
 
 async function addUsersHandler(req, res, next) {
 

@@ -22,8 +22,10 @@ class Admin extends Component {
     let parent = this;
     let newState = { ...this.state};
 
+
     axios.delete(process.env.REACT_APP_API_DOMAIN+'/v1/movie/'+id).then((resp) => {
-            console.log(resp);
+
+            // Remove the deleted element from state.
 
             newState.items.data.forEach((item,index, object)=>{
 
@@ -61,7 +63,7 @@ class Admin extends Component {
 
   editMovieHandler = (name,type,id) => {
 
-    var data = new FormData();
+    let data = new FormData();
     data.append('name', name);
     data.append('type', type);
     data.append('id', id);
@@ -79,24 +81,15 @@ class Admin extends Component {
 
   addMovieHandler = (name, type) => {
 
-      console.log(name);
-      console.log(type);
-
-      var data = new FormData();
+      let data = new FormData();
       data.append('name', name);
       data.append('type', type);
       data.append('rented', 0);
 
-      //let newState = {...this.state};
-      
-
       axios.post(process.env.REACT_APP_API_DOMAIN+'/v1/movies',data)
           .then((resp) => {
-            console.log("inserted");
-            
             this.getMoviesHandler();
             this.modalClosed();
-            //this.setState({items: resp.data});
         })
         .catch((err) => {
           console.log(err);
@@ -125,9 +118,6 @@ class Admin extends Component {
 
         axios.get(process.env.REACT_APP_API_DOMAIN+'/v1/movies')
           .then((resp) => {
-
-            console.log(resp.data)
-
             this.setState({items: resp.data});
           })
           .catch((err) => {
@@ -140,12 +130,14 @@ class Admin extends Component {
         
         this.getMoviesHandler();
           
-      }
+    }
 
     
     render (){
 
         let moviesList = "";
+        let addMovie = "";
+        let editMovie = "";
         
         if(this.state.items){
           moviesList = <MoviesAdmin
@@ -154,10 +146,6 @@ class Admin extends Component {
                           deleteClicked={this.itemDeleteHandler.bind(this)}
                         />;
         }
-
-        let addMovie = "";
-
-        let editMovie = "";
 
 
         if(this.state.openAddModal){
@@ -176,13 +164,11 @@ class Admin extends Component {
         return (
             <Aux>
             <HeaderAdmin/>
-
              <Button btnType="AddMovie" clicked={this.itemAddHandler}> + Add Movie</Button>
-
              <Modal
                 show={this.state.openAddModal}
                 modalClosed={this.modalClosed}
-            >
+              >
               {addMovie}
             </Modal>
 
@@ -192,9 +178,11 @@ class Admin extends Component {
 
             >
               {editMovie}
-            </Modal>
 
+            </Modal>
+            
             {moviesList}
+
             </Aux>
         )
 
