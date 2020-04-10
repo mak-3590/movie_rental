@@ -1,5 +1,7 @@
 # Video Rental Store
 
+* Will be updating this stack using docker-compose
+
 ## Tech Stack
 
  1. Firebase google authentication to authenticate users.
