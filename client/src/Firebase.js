@@ -4,7 +4,7 @@ import firestore from 'firebase/firestore'
 const settings = {timestampsInSnapshots: true};
 
 const firebaseConfig = {
-    apiKey: "AIzaSyCtdUtjNLeidR8NxOXWqvls37ZvjQuCEcE",
+  	apiKey: "AIzaSyCtdUtjNLeidR8NxOXWqvls37ZvjQuCEcE",
     authDomain: "movie-rental-19774.firebaseapp.com",
     databaseURL: "https://movie-rental-19774.firebaseio.com",
     projectId: "movie-rental-19774",

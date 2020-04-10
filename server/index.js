@@ -37,20 +37,6 @@ server.pre(cors.preflight)
 server.use(cors.actual)
 
 
-function corsHandler(req, res, next) {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Headers', 'Origin, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, X-Response-Time, X-PINGOTHER, X-CSRF-Token,Authorization');
-    res.setHeader('Access-Control-Allow-Methods', '*');
-    res.setHeader('Access-Control-Expose-Headers', 'X-Api-Version, X-Request-Id, X-Response-Time');
-    res.setHeader('Access-Control-Max-Age', '1000');
-    return next();
-}
-
-function optionsRoute(req, res, next) {
-    res.send(200);
-    return next();
-}
-
 /*server.use(restify.CORS({          // defaults to false
 methods: ['GET','PUT','DELETE','POST','OPTIONS']
 }));*/
@@ -69,13 +55,13 @@ server.get('/'+ver+'/users',getUsersHandler);
 server.get('/'+ver+'/user/:id',getUserHandler);
 
 server.post('/'+ver+'/orders',addOrderHandler);
-server.get('/'+ver+'/user/:id/orders',getUserRentalsHandler);
+server.get('/'+ver+'/user/:id/orders',getUserOrdersHandler);
 
 
-function getUserRentalsHandler(req, res, next) {
-		//let query = "SELECT movies.name AS movie_name,movies.id,movies.type,movies.rented,movie_types.name AS mtype_name,movie_types.price FROM movies INNER JOIN movie_types ON movies.type = movie_types.id";
+function getUserOrdersHandler(req, res, next) {
+	
 	const id = req.params.id;
-	const query = "SELECT u.name AS uname,u.email_id, o.id AS order_id,o.payment_type, m.id AS movie_id,m.name,m.type,mt.name AS movie_type,pt.name AS payment_name FROM users u INNER JOIN orders o on o.user_id = u.id INNER JOIN payment_types pt on o.payment_type = pt.id INNER JOIN movies m on m.id = o.movie_id INNER JOIN movie_types mt on m.type = mt.id WHERE u.id = '"+id+"'";
+	const query = "SELECT u.name AS uname,u.email_id, o.id AS order_id,o.payment_type, m.id AS movie_id,m.name,m.type,mt.name AS movie_type,pt.name AS payment_name FROM users u INNER JOIN orders o on o.user_id = u.id INNER JOIN payment_types pt on o.payment_type = pt.id INNER JOIN movies m on m.id = o.movie_id INNER JOIN movie_types mt on m.type = mt.id WHERE u.id = '"+id+"' ORDER BY o.id DESC";
 	
 	try {
 		connection.query(query, function (error, results, fields) {
@@ -108,15 +94,24 @@ async function addOrderHandler(req, res, next) {
 	const movie_id = req.params.movie_id;
 	const payment_type = req.params.payment_type;
 	const points = req.params.points;
-	const query = "INSERT INTO orders (user_id, movie_id, payment_type) VALUES ('"+user_id+"','"+movie_id+"','"+payment_type+"')";
+	
 	
 	try {
 
-	const order = await asynqQuery(query);
-	
-	await updateMovieAvailability(movie_id);
+	// Add orders to order table
 
-	await updatePoints(points,user_id);
+	const orderQuery = "INSERT INTO orders (user_id, movie_id, payment_type) VALUES ('"+user_id+"','"+movie_id+"','"+payment_type+"')";
+	const order = await asynqQuery(orderQuery);
+	
+	// Once the order is placed change the availability (rented = 1)
+
+	const updateAvailQuery = "UPDATE movies SET rented=1 WHERE id="+movie_id;
+	const movies = await asynqQuery(updateAvailQuery);
+
+	// Once the order is placed update the points for the user
+
+	const updatePointsQuery = 'UPDATE users SET points="'+points+'" WHERE id="'+user_id+'"';
+	const pointsData = await asynqQuery(updatePointsQuery);
 
 	res.send({status:200, orderId: order.insertId });
 
@@ -125,24 +120,6 @@ async function addOrderHandler(req, res, next) {
 	}
 
 }
-
-async function updateMovieAvailability(id){
-
-	const query = "UPDATE movies SET rented=1 WHERE id="+id;
-	return await connection.query(query);
-
-}
-
-async function updatePoints(points,id){
-
-	try {
-		const query = 'UPDATE users SET points="'+points+'" WHERE id="'+id+'"';
-		return await connection.query(query);
-	}catch(err){
-	    return res.send({ 'status':HttpStatus.INTERNAL_SERVER_ERROR,error: err, message: err.message }); // 500
-	}
-}
-
 
 async function addUsersHandler(req, res, next) {
 
@@ -251,10 +228,10 @@ function updateMovieHandler(req, res, next) {
 
 function getMoviesHandler(req, res, next) {
 
-	let query = "SELECT movies.name AS movie_name,movies.id,movies.type,movies.rented,movie_types.name AS mtype_name,movie_types.price FROM movies INNER JOIN movie_types ON movies.type = movie_types.id WHERE movies.deleted=0";
+	let query = "SELECT movies.name AS movie_name,movies.id,movies.type,movies.rented,movie_types.name AS mtype_name,movie_types.price FROM movies INNER JOIN movie_types ON movies.type = movie_types.id WHERE movies.deleted=0 ORDER BY movies.id DESC";
 
 	if(req.query.rented){
-		query = "SELECT movies.name AS movie_name,movies.id,movies.type,movies.rented,movie_types.name AS mtype_name,movie_types.price FROM movies INNER JOIN movie_types ON movies.type = movie_types.id WHERE movies.deleted=0 AND movies.rented="+req.query.rented;
+		query = "SELECT movies.name AS movie_name,movies.id,movies.type,movies.rented,movie_types.name AS mtype_name,movie_types.price FROM movies INNER JOIN movie_types ON movies.type = movie_types.id WHERE movies.deleted=0 AND movies.rented="+req.query.rented+" ORDER BY movies.id DESC";
 	}
 
 	try {
@@ -294,6 +271,20 @@ function deleteMovieHandler(req, res, next) {
 		return res.send({ 'status':HttpStatus.INTERNAL_SERVER_ERROR,error: err, message: err.message });
 	}
 
+}
+
+function corsHandler(req, res, next) {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Headers', 'Origin, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, X-Response-Time, X-PINGOTHER, X-CSRF-Token,Authorization');
+    res.setHeader('Access-Control-Allow-Methods', '*');
+    res.setHeader('Access-Control-Expose-Headers', 'X-Api-Version, X-Request-Id, X-Response-Time');
+    res.setHeader('Access-Control-Max-Age', '1000');
+    return next();
+}
+
+function optionsRoute(req, res, next) {
+    res.send(200);
+    return next();
 }
 
  

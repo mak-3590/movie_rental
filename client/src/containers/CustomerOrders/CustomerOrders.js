@@ -20,7 +20,6 @@ class CustomerOrdersView extends Component {
         const id = this.props.match.params.id;
         axios.get(process.env.REACT_APP_API_DOMAIN+'/v1/user/'+id+'/orders')
           .then((resp) => {
-            console.log(resp.data)
             this.setState({items: resp.data});
           })
           .catch((err) => {
@@ -32,7 +31,7 @@ class CustomerOrdersView extends Component {
   componentDidMount(){
       this.getMoviesHandler();
   }
-  s
+
   render (){
 
       let moviesList = "";

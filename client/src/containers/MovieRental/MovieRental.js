@@ -73,15 +73,13 @@ class MovieRental extends Component {
 
       firebase.auth().signInWithPopup(provider).then(function(result) {
         
-        const token = result.credential.accessToken;
         const user = result.user;
         const id = user.uid;
         const name = user.displayName;
         const email_id = user.email;
         state.addUserHandler(id,name,email_id);
         state.setState({loggedIn:true});
-        ;
-        // ...
+
       }).catch(function(error) {
           console.log(error);
       });
@@ -91,9 +89,6 @@ class MovieRental extends Component {
 
         const state = this;
         firebase.auth().signOut().then(function() {
-
-          console.log("Logged Out");
-
           state.setState(
             {
               loggedIn:false,
@@ -110,19 +105,20 @@ class MovieRental extends Component {
     }
 
     authStateChanged = () => {
+
         const state = this;
 
-          firebase.auth().onAuthStateChanged(function(user) {
-            if(user){
-              state.setState({loggedIn:true});
-              state.getUserHandler(user.uid);
+        firebase.auth().onAuthStateChanged(function(user) {
+          if(user){
+            state.setState({loggedIn:true});
+            state.getUserHandler(user.uid);
+          
+          }else{
+            state.setState({loggedIn:false});
             
-            }else{
-              state.setState({loggedIn:false});
-              
-            }
+          }
 
-        });
+      });
 
     }
 
@@ -130,7 +126,6 @@ class MovieRental extends Component {
     componentDidMount(){
         
         this.getMoviesHandler();
-        //this.logoutHandler();
         this.authStateChanged();
         this.setState({orderDone: true});
           
@@ -218,6 +213,7 @@ class MovieRental extends Component {
     render (){
 
         let moviesList = "";
+        let rentList = "";
 
 
         if(this.state.items){
@@ -228,14 +224,7 @@ class MovieRental extends Component {
         }
                   
 
-        /*if(this.state.orderDone ){
-            moviesList = <Movies 
-                      clicked={this.rentOutHandler.bind(this)}
-                      items={this.state.items}
-                    />;
-        }*/
         
-        let rentList = "";
 
         if(this.state.openModal ){
           rentList = <Rent 
@@ -247,13 +236,16 @@ class MovieRental extends Component {
 
         }
 
+
+
         return (
             <Aux>
             <Header 
                 loggedIn={this.state.loggedIn}
-                name = {this.state.userData.name}
+                userData = {this.state.userData}
                 logoutClicked={this.logoutHandler}
-                loginClicked={this.loginHandler}/>
+                loginClicked={this.loginHandler}
+             />
             <Modal
                 show={this.state.openModal}
                 modalClosed={this.modalClosed}
