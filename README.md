@@ -4,7 +4,7 @@
 
  1. Firebase google authentication to authenticate users.
  2. React framework for serving front-end.
- 3. Restify API framework.
+ 3. Restify NodeJSframework.
  4. Mysql DB.
 
 ## Firebase
@@ -32,11 +32,11 @@ https://console.firebase.google.com/
 - sudo docker cp movie_rental.sql mysql:/movie_rental.sql
 - sudo docker exec -i mysql mysql -uroot -ppassword mysql < movie_rental.sql
 
-## Backend (API)
+## Accessing Backend (API)
 
 http://localhost:8081/v1/movies
 
-## Frontend
+## Accessing Frontend
 
 - http://localhost:3000/
 - http://localhost:3000/admin (Admin Panel)
