@@ -1,5 +1,7 @@
 # Video Rental Store
 
+* Will be updating the backend to express.js and will put swagger documentation for API's 
+
 ## Tech Stack
 
  1. Firebase google authentication to authenticate users.
