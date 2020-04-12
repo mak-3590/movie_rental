@@ -30,6 +30,8 @@ server.use(bodyParser.urlencoded({
 server.use(bodyParser.json());
 server.use(cors());
 
+server.set('base', '/v1');
+
 server.options('*', cors())
 
 server.use("/docs", swaggerUi.serve);
