@@ -4,7 +4,7 @@
 
  1. Firebase google authentication to authenticate users.
  2. React framework for serving front-end.
- 3. Express framework.
+ 3. Express NodeJs framework.
  4. Mysql DB.
  5. Swagger for API documetation.
 
