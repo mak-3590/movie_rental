@@ -1,13 +1,12 @@
 # Video Rental Store
 
-* Will be updating the backend to express.js and will put swagger documentation for API's 
-
 ## Tech Stack
 
  1. Firebase google authentication to authenticate users.
  2. React framework for serving front-end.
- 3. Restify NodeJSframework.
+ 3. Express framework.
  4. Mysql DB.
+ 5. Swagger for API documetation.
 
 ## Firebase
 
@@ -37,6 +36,10 @@ https://console.firebase.google.com/
 ## Accessing Backend (API)
 
 http://localhost:8081/v1/movies
+
+## Accessing API Documentation
+
+http://localhost:8081/docs
 
 ## Accessing Frontend
 
