@@ -30,7 +30,7 @@ server.use(bodyParser.urlencoded({
 server.use(bodyParser.json());
 server.use(cors());
 
-server.set('base', '/v1');
+//server.set('base', '/v1');
 
 server.options('*', cors())
 
@@ -38,22 +38,22 @@ server.use("/docs", swaggerUi.serve);
 server.get("/docs", swaggerUi.setup(swaggerDocument));
 
 /* Movies */
-server.post('/movies',addMoviesHandler);
-server.get('/movies',getMoviesHandler);
-server.get('/movie/:id',getMovieHandler);
-server.put('/movie/:id',updateMovieHandler);
-server.delete('/movie/:id',deleteMovieHandler);
+server.post('/v1/movies',addMoviesHandler);
+server.get('/v1/movies',getMoviesHandler);
+server.get('/v1/movie/:id',getMovieHandler);
+server.put('/v1/movie/:id',updateMovieHandler);
+server.delete('/v1/movie/:id',deleteMovieHandler);
 /* Movies */
 
 /* Users */
-server.post('/users',addUsersHandler);
-server.get('/users',getUsersHandler);
-server.get('/user/:id',getUserHandler);
+server.post('/v1/users',addUsersHandler);
+server.get('/v1/users',getUsersHandler);
+server.get('/v1/user/:id',getUserHandler);
 /* Users */
 
 /* Orders */
-server.post('/orders',addOrderHandler);
-server.get('/user/:id/orders',getUserOrdersHandler);
+server.post('/v1/orders',addOrderHandler);
+server.get('/v1/user/:id/orders',getUserOrdersHandler);
 /* Orders */
 
 function getUserOrdersHandler(req, res, next) {
