@@ -1,4 +1,6 @@
 sftp-config.json
+server/.env
+client/.env
 server/node_modules/
 client/node_modules/
 client/src/Firebase.js

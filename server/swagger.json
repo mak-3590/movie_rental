@@ -1,0 +1,334 @@
+{
+    "swagger": "2.0",
+    "info": {
+      "version": "1.0.0",
+      "title": "Yet Another Node.js Blogg Application API",
+      "description": "Yet Another Node.js Blogg Application API",
+      "license": {
+        "name": "MIT",
+        "url": "https://opensource.org/licenses/MIT"
+      }
+    },
+    "host": "localhost:8000",
+    "basePath": "/",
+    "tags": [
+      {
+        "name": "Users",
+        "description": "API for users in the system"
+      }
+    ],
+    "schemes": [
+      "http"
+    ],
+    "consumes": [
+      "application/json"
+    ],
+    "produces": [
+      "application/json"
+    ],
+    "paths": {
+        "/users": {
+            "post": {
+              "tags": [
+                "Users"
+              ],
+              "description": "Create new user in system",
+              "parameters": [
+                {
+                  "name": "user",
+                  "in": "body",
+                  "description": "User that we want to create",
+                  "schema": {
+                    "$ref": "#/definitions/User"
+                  }
+                }
+              ],
+              "produces": [
+                "application/json"
+              ],
+              "responses": {
+                "200": {
+                  "description": "New user is created",
+                  "schema": {
+                    "$ref": "#/definitions/User"
+                  }
+                }
+              }
+            },
+            "get": {
+              "tags": [
+                "Users"
+              ],
+              "summary": "Get all users in system",
+              "responses": {
+                "200": {
+                  "description": "OK",
+                  "schema": {
+                    "$ref": "#/definitions/Users"
+                  }
+                }
+              }
+            }
+        },
+        "/user/{id}": {
+            "parameters": [
+              {
+                "name": "id",
+                "in": "path",
+                "required": true,
+                "description": "ID of user that we want to find",
+                "type": "string"
+              }
+            ],
+            "get": {
+              "tags": [
+                "Users"
+              ],
+              "summary": "Get user with given ID",
+              "responses": {
+                "200": {
+                  "description": "User is found",
+                  "schema": {
+                    "$ref": "#/definitions/User"
+                  }
+                }
+              }
+            }
+          },
+          "/user/{id}/orders": {
+            "parameters": [
+              {
+                "name": "id",
+                "in": "path",
+                "required": true,
+                "description": "ID of user that we want to find orders for",
+                "type": "string"
+              }
+            ],
+            "get": {
+              "tags": [
+                "Users","Orders"
+              ],
+              "summary": "Get orders with given user ID",
+              "responses": {
+                "200": {
+                  "description": "Orders are found",
+                  "schema": {
+                    "$ref": "#/definitions/User"
+                  }
+                }
+              }
+            }
+          },
+          "/orders": {
+            "post": {
+              "tags": [
+                "Orders"
+              ],
+              "description": "Create new order in system",
+              "parameters": [
+                {
+                  "name": "order",
+                  "in": "body",
+                  "description": "Order that we want to create",
+                  "schema": {
+                    "$ref": "#/definitions/Order"
+                  }
+                }
+              ],
+              "produces": [
+                "application/json"
+              ],
+              "responses": {
+                "200": {
+                  "description": "New order is created",
+                  "schema": {
+                    "$ref": "#/definitions/Order"
+                  }
+                }
+              }
+            }
+        },
+      "/movies": {
+        "post": {
+          "tags": [
+            "Movies"
+          ],
+          "description": "Create new movie in system",
+          "parameters": [
+            {
+              "name": "movie",
+              "in": "body",
+              "description": "Movie that we want to create",
+              "schema": {
+                "$ref": "#/definitions/Movie"
+              }
+            }
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "200": {
+              "description": "New movie is created",
+              "schema": {
+                "$ref": "#/definitions/Movie"
+              }
+            }
+          }
+        },
+        "get": {
+          "tags": [
+            "Movies"
+          ],
+          "summary": "Get all movies in system",
+          "responses": {
+            "200": {
+              "description": "OK",
+              "schema": {
+                "$ref": "#/definitions/Movies"
+              }
+            }
+          }
+        }
+      },
+      "/movie/{id}": {
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ID of movie that we want to find",
+            "type": "string"
+          }
+        ],
+        "get": {
+          "tags": [
+            "Movies"
+          ],
+          "summary": "Get movie with given ID",
+          "responses": {
+            "200": {
+              "description": "Movie is found",
+              "schema": {
+                "$ref": "#/definitions/Movie"
+              }
+            }
+          }
+        },
+        "delete": {
+          "summary": "Delete movie with given ID",
+          "tags": [
+            "Movies"
+          ],
+          "responses": {
+            "200": {
+              "description": "Movie is deleted",
+              "schema": {
+                "$ref": "#/definitions/Movie"
+              }
+            }
+          }
+        },
+        "put": {
+          "summary": "Update movie with give ID",
+          "tags": [
+            "Movies"
+          ],
+          "parameters": [
+            {
+              "name": "movie",
+              "in": "body",
+              "description": "Movie with new values of properties",
+              "schema": {
+                "$ref": "#/definitions/Movie"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Movie is updated",
+              "schema": {
+                "$ref": "#/definitions/Movie"
+              }
+            }
+          }
+        }
+      }
+    },
+    "definitions": {
+        "Order": {
+            "required": [
+              "user_id",
+              "movie_id",
+              "payment_type",
+              "points"
+            ],
+            "properties": {
+             "user_id": {
+                "type": "string",
+                "example": "a1234"
+              },
+              "movie_id": {
+                "type": "integer",
+                "example": 10
+              },
+              "payment_type": {
+                "type": "integer",
+                "example": 1
+              },
+              "points": {
+                "type": "integer",
+                "example": 10
+              }
+            }
+        },
+        "Orders": {
+            "type": "array",
+            "$ref": "#/definitions/Order"
+        },
+      "Movie": {
+        "required": [
+          "name",
+          "type"
+        ],
+        "properties": {
+         "name": {
+            "type": "string"
+          },
+          "type": {
+            "type": "integer",
+            "example": 1
+          }
+        }
+      },
+      "Movies": {
+        "type": "array",
+        "$ref": "#/definitions/Movie"
+      },
+      "User": {
+        "required": [
+          "id",
+          "name",
+          "email_id"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "uniqueItems": true
+          },
+          "name": {
+            "type": "string"
+          },
+          "email_id": {
+            "type": "string"
+          }
+
+        }
+      },
+      "Users": {
+        "type": "array",
+        "$ref": "#/definitions/User"
+      }
+    }
+  }
