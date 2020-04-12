@@ -7,6 +7,8 @@ const HttpStatus = require('http-status-codes');
 const dotenv = require('dotenv').config();
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const multer = require('multer');
+const forms = multer();
 
 const connection = mysql.createConnection({
     host     : process.env.DB_HOST,
@@ -29,6 +31,7 @@ server.use(bodyParser.urlencoded({
 
 server.use(bodyParser.json());
 server.use(cors());
+server.use(forms.array());
 
 //server.set('base', '/v1');
 
